@@ -2,9 +2,8 @@ import { FlameIcon, Target, ZapIcon, Clock, Zap, Star, Calendar, TrendingUp, Tro
 import { Card } from "../ui/card"
 import { Button } from "../ui/button"
 import { Progress } from "../ui/progress"
-import { tr } from "date-fns/locale"
 
-function Dashboad({ onNavigate }) {
+export default function Dashboard({ onNavigate }) {
     let progressoAtual = 35
     let progressoMax = 50
 
@@ -42,7 +41,7 @@ function Dashboad({ onNavigate }) {
         <div className="min-h-screen from-background to-muted/30">
             <div className="container mx-auto px-4 py-8 max-w-7xl">
                 <div className="mb-8">
-                    <h1 className="text-foreground mb-2 text-2xl">Bem-vindo de volta, Maria!</h1>
+                    <h1 className="mb-2 text-2xl">Bem-vindo de volta, Maria!</h1>
                     <p className="text-muted-foreground">
                         Continue sua jornada de aprendizado
                     </p>
@@ -228,5 +227,3 @@ function Dashboad({ onNavigate }) {
         </div>
     )
 }
-
-export default Dashboad
