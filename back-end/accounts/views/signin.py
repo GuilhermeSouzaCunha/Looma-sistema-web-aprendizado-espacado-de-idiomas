@@ -24,8 +24,4 @@ class SigninView(BaseAPIView):
                 "refresh": str(refresh),
                 "access": str(refresh.access_token)
             })
-        except Exception as e:
-            return Response(
-                {"error": str(e)},
-                status=401
-            )
+        except Exception as e:return Response({"error": str(e)},status=401)

@@ -1,22 +1,18 @@
-// RootLayout.jsx (ou crie um AppWrapper.jsx e use ele como raiz das rotas)
-import { useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';  // ← useNavigate do react-router!
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import HeaderApp from './HeaderApp.jsx';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext.jsx';
 
 export default function RootLayout() {
-    const navigate = useNavigate(); 
+    const location = useLocation();
+    const { user, logout } = useContext(AuthContext);
 
-    const [currentPage, setCurrentPage] = useState('dashboard');
+    const currentPage = location.pathname.replace('/', '') || 'dashboard';
+
+    const navigate = useNavigate();
 
     const handleNavigate = (page) => {
-        setCurrentPage(page);
         navigate(`/${page}`);
-    };
-
-    const handleLogout = () => {
-        console.log('Logout realizado!');
-        // lógica de logout (limpar token, redirecionar para login...)
-        navigate('/login');
     };
 
     return (
@@ -24,12 +20,16 @@ export default function RootLayout() {
             <HeaderApp
                 currentPage={currentPage}
                 onNavigate={handleNavigate}
-                user={null}
-                onLogout={handleLogout}
-                userPoints={1250}
-                streak={7}
+                //isDarkMode={}
+                //onToggleDarkMode={}
+                user={user}                
+                onLogout={logout}    
+                userPoints={user?.pontos || 1250}
+                streak={user?.sequencia_atual || 7}
             />
-            <Outlet />
+            <main className="container mx-auto p-4">
+                <Outlet />
+            </main>
         </>
     );
 }

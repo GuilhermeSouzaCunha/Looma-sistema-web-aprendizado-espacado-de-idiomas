@@ -1,18 +1,23 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { Separator } from "../ui/separator";
 import { Checkbox } from "../ui/checkbox";
-import { UserPlus, Mail, Lock, Eye, EyeOff, User, Globe, Trophy, Zap, Target } from "lucide-react";
+import { AuthContext } from "../../context/AuthContext";
+import { UserPlus, Mail, Lock, Eye, EyeOff, User } from "lucide-react";
 
 export default function Signup({ onNavigate, onLogin }) {
+    const { signup, loading } = useContext(AuthContext);
+
     const [formData, setFormData] = useState({
         name: "",
         email: "",
         password: "",
         confirmPassword: "",
+        idiomaNativo: 1,
+        idiomaAlvo: 2,
     });
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -22,7 +27,6 @@ export default function Signup({ onNavigate, onLogin }) {
 
     const handleChange = (field) => (e) => {
         setFormData({ ...formData, [field]: e.target.value });
-        // Limpar erro do campo ao digitar
         if (errors[field]) {
             setErrors({ ...errors, [field]: null });
         }
@@ -65,14 +69,35 @@ export default function Signup({ onNavigate, onLogin }) {
         if (!validateForm()) return;
 
         setIsLoading(true);
+        setErrors({});
 
-        // Simular criação de conta
-        setTimeout(() => {
+        try {
+            const user = await signup(
+                formData.name,
+                formData.email,
+                formData.password,
+                formData.idiomaNativo,
+                formData.idiomaAlvo
+            );
+
+            onLogin({
+                email: user.email,
+                name: user.nome_usuario,
+                access: user.access,
+                refresh: user.refresh,
+            });
+
+            onNavigate("dashboard");
+
+        } catch (error) {
+            setErrors({
+                general: error.message || "Erro ao conectar com o servidor",
+            });
+        } finally {
             setIsLoading(false);
-            onLogin({ email: formData.email, name: formData.name });
-            onNavigate('dashboard');
-        }, 1000);
+        }
     };
+
 
     const handleSocialSignup = (provider) => {
         setIsLoading(true);
@@ -84,9 +109,8 @@ export default function Signup({ onNavigate, onLogin }) {
     };
 
     return (
-        <div className="flex items-center justify-center bg-linear-to-br from-blue-100 via-secondary/10 to-cyan-50 dark:from-primary/5 dark:via-secondary/5 dark:to-accent/5 px-4 py-12">
+        <div className="flex items-center justify-center  dark:from-primary/5 dark:via-secondary/5 dark:to-accent/5 px-4 py-12">
             <div className="w-full max-w-md">
-                {/* Logo e Header */}
                 <div className="text-center mb-8">
                     <h1 className="text-3xl mb-2 bg-linear-to-br from-blue-500 to-green-500 bg-clip-text text-transparent">
                         Comece sua jornada!
@@ -105,7 +129,6 @@ export default function Signup({ onNavigate, onLogin }) {
                     </CardHeader>
 
                     <CardContent className="space-y-4">
-                        {/* Botões sociais no topo */}
                         <div className="grid grid-cols-2 gap-3">
                             <Button
                                 variant="outline"
@@ -159,7 +182,7 @@ export default function Signup({ onNavigate, onLogin }) {
 
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div className="space-y-2">
-                                <Label htmlFor="name">Nome completo</Label>
+                                <Label htmlFor="name">Nome de usuário</Label>
                                 <div className="relative">
                                     <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                                     <Input

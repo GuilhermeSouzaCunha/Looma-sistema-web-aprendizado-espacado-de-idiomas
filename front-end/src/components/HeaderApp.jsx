@@ -1,56 +1,80 @@
-import { Button } from "./ui/button";
-import { BookOpen, Trophy, User, LayoutDashboard, Moon, Sun, Flame, LogOut } from "lucide-react";
+import { useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
-export default function Header({ currentPage, onNavigate, user, onLogout, userPoints = 1250, streak = 7 }) {
-    const isLoggedIn = currentPage !== 'home';
+import { Button } from "./ui/button";
+import { BookOpen, Trophy, User, LayoutDashboard, Flame, LogOut } from "lucide-react";
+
+export default function HeaderApp({ userPoints = 1250, streak = 7 }) {
+    const { user, logout } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const isLoggedIn = !!user;
+
+    const currentPage = location.pathname.replace("/", "") || "dashboard";
+
+    const handleNavigate = (path) => {
+        navigate(`/${path}`);
+    };
 
     return (
-        <header className="sticky top-0 z-50 w-full border-b bg-card/95 backdrop-blur">
+        <header className="sticky top-0 z-50 w-full bg-card/95 backdrop-blur">
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
                 {/* Logo */}
                 <div
                     className="flex items-center gap-2 cursor-pointer"
-                    onClick={() => onNavigate(isLoggedIn ? 'dashboard' : 'home')}
+                    onClick={() =>
+                        handleNavigate(isLoggedIn ? "dashboard" : "login")
+                    }
                 >
-                    <span className="font-semibold">
-                        Looma
-                    </span>
+                    <span className="font-semibold">Looma</span>
                 </div>
-
                 {/* Navegação */}
                 {isLoggedIn ? (
                     <nav className="flex items-center gap-1 sm:gap-2">
                         <Button
-                            variant={currentPage === 'dashboard' ? 'default' : 'ghost'}
+                            variant={
+                                currentPage === "dashboard" ? "default" : "ghost"
+                            }
                             size="sm"
-                            onClick={() => onNavigate('dashboard')}
+                            onClick={() => handleNavigate("dashboard")}
                             className="gap-2"
                         >
                             <LayoutDashboard className="w-4 h-4" />
                             <span className="hidden sm:inline">Dashboard</span>
                         </Button>
+
                         <Button
-                            variant={currentPage === 'flashcards' ? 'default' : 'ghost'}
+                            variant={
+                                currentPage === "flashcards" ? "default" : "ghost"
+                            }
                             size="sm"
-                            onClick={() => onNavigate('flashcards')}
+                            onClick={() => handleNavigate("flashcards")}
                             className="gap-2"
                         >
                             <BookOpen className="w-4 h-4" />
                             <span className="hidden sm:inline">Flashcards</span>
                         </Button>
+
                         <Button
-                            variant={currentPage === 'activities' ? 'default' : 'ghost'}
+                            variant={
+                                currentPage === "atividades" ? "default" : "ghost"
+                            }
                             size="sm"
-                            onClick={() => onNavigate('atividades')}
+                            onClick={() => handleNavigate("atividades")}
                             className="gap-2"
                         >
                             <Flame className="w-4 h-4" />
                             <span className="hidden sm:inline">Atividades</span>
                         </Button>
+
                         <Button
-                            variant={currentPage === 'ranking' ? 'default' : 'ghost'}
+                            variant={
+                                currentPage === "ranking" ? "default" : "ghost"
+                            }
                             size="sm"
-                            onClick={() => onNavigate('ranking')}
+                            onClick={() => handleNavigate("ranking")}
                             className="gap-2"
                         >
                             <Trophy className="w-4 h-4" />
@@ -60,16 +84,17 @@ export default function Header({ currentPage, onNavigate, user, onLogout, userPo
                 ) : (
                     <div className="flex items-center gap-2">
                         <Button
-                            variant="ghost"
+                            variant={currentPage === "login" ? "default" : "ghost"}
                             size="sm"
-                            onClick={() => onNavigate('login')}
+                            onClick={() => handleNavigate("login")}
                         >
                             Entrar
                         </Button>
+
                         <Button
+                            variant={currentPage === "cadastro" ? "default" : "ghost"}
                             size="sm"
-                            className="bg-primary hover:bg-primary/90"
-                            onClick={() => onNavigate('cadastro')}
+                            onClick={() => handleNavigate("cadastro")}
                         >
                             Criar conta
                         </Button>
@@ -89,15 +114,11 @@ export default function Header({ currentPage, onNavigate, user, onLogout, userPo
                                     <span className="text-sm">{userPoints}</span>
                                 </div>
                             </div>
-                        </>
-                    )}
 
-                    {isLoggedIn && (
-                        <>
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                onClick={() => onNavigate('perfil')}
+                                onClick={() => handleNavigate("perfil")}
                                 className="rounded-lg"
                             >
                                 <User className="w-5 h-5" />
@@ -106,7 +127,7 @@ export default function Header({ currentPage, onNavigate, user, onLogout, userPo
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                onClick={onLogout}
+                                onClick={logout}
                                 className="rounded-lg text-destructive hover:text-destructive"
                                 title="Sair"
                             >
