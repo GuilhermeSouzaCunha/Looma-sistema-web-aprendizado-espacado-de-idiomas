@@ -1,11 +1,8 @@
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
-from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 class BaseAPIView(APIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [AllowAny]
-
+    permission_classes = [IsAuthenticated]
     def get_user_data(self, user):
         return {
             "pontos": user.pontos,

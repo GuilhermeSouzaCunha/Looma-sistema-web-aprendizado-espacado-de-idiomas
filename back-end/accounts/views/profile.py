@@ -6,7 +6,7 @@ from .base import BaseAPIView
 class ProfileView(BaseAPIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request) -> Response:
+    def get(self, request):
         user = request.user
         serializer = UserSerializer(user)
         extras = self.get_user_data(user)
