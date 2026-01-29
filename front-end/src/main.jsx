@@ -7,6 +7,8 @@ import Activities from './components/pages/Activities.jsx'
 import Ranking from './components/pages/Ranking.jsx'
 import Flashcards from './components/pages/Flashcards.jsx'
 import Profile from './components/pages/Profile.jsx'
+import Signup from './components/pages/Signup.jsx'
+import Login from './components/pages/Login.jsx'
 import RootLayout from './components/RootLayout.jsx'
 
 const router = createBrowserRouter([
@@ -20,6 +22,8 @@ const router = createBrowserRouter([
       { path: "ranking", element: <Ranking /> },
       { path: "flashcards", element: <Flashcards /> },
       { path: "perfil", element: <Profile /> },
+      { path: "cadastro", element: <Signup /> },
+      { path: "login", element: <Login /> },
       //{ path: "ranking", element: <Ranking /> },
       //{ path: "profile", element: <Profile /> }
     ]

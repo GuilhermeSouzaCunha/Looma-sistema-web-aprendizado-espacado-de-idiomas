@@ -1,7 +1,7 @@
 import { Button } from "./ui/button";
 import { BookOpen, Trophy, User, LayoutDashboard, Moon, Sun, Flame, LogOut } from "lucide-react";
 
-export default function Header({ currentPage, onNavigate, isDarkMode, onToggleDarkMode, user, onLogout, userPoints = 1250, streak = 7}) {
+export default function Header({ currentPage, onNavigate, user, onLogout, userPoints = 1250, streak = 7 }) {
     const isLoggedIn = currentPage !== 'home';
 
     return (
@@ -12,15 +12,12 @@ export default function Header({ currentPage, onNavigate, isDarkMode, onToggleDa
                     className="flex items-center gap-2 cursor-pointer"
                     onClick={() => onNavigate(isLoggedIn ? 'dashboard' : 'home')}
                 >
-                    <div className="w-10 h-10 from-primary to-secondary rounded-xl flex items-center justify-center">
-                        <BookOpen className="w-6 h-6 text-white" />
-                    </div>
-                    <span className="font-semibold text-foreground hidden sm:inline">
+                    <span className="font-semibold">
                         Looma
                     </span>
                 </div>
 
-                {/* Navigation */}
+                {/* Navegação */}
                 {isLoggedIn ? (
                     <nav className="flex items-center gap-1 sm:gap-2">
                         <Button
@@ -44,7 +41,7 @@ export default function Header({ currentPage, onNavigate, isDarkMode, onToggleDa
                         <Button
                             variant={currentPage === 'activities' ? 'default' : 'ghost'}
                             size="sm"
-                            onClick={() => onNavigate('activities')}
+                            onClick={() => onNavigate('atividades')}
                             className="gap-2"
                         >
                             <Flame className="w-4 h-4" />
@@ -72,49 +69,35 @@ export default function Header({ currentPage, onNavigate, isDarkMode, onToggleDa
                         <Button
                             size="sm"
                             className="bg-primary hover:bg-primary/90"
-                            onClick={() => onNavigate('signup')}
+                            onClick={() => onNavigate('cadastro')}
                         >
                             Criar conta
                         </Button>
                     </div>
                 )}
 
-                {/* User Info & Actions */}
                 <div className="flex items-center gap-2 sm:gap-4">
                     {isLoggedIn && (
                         <>
                             <div className="hidden sm:flex items-center gap-3">
-                                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-accent/10 rounded-lg">
-                                    <Flame className="w-4 h-4 text-accent" />
+                                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-yellow-50 rounded-lg">
+                                    <Flame className="w-4 h-4 text-yellow-500" />
                                     <span className="text-sm">{streak}</span>
                                 </div>
-                                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 rounded-lg">
-                                    <Trophy className="w-4 h-4 text-primary" />
+                                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 rounded-lg">
+                                    <Trophy className="w-4 h-4 text-emerald-500" />
                                     <span className="text-sm">{userPoints}</span>
                                 </div>
                             </div>
                         </>
                     )}
 
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={onToggleDarkMode}
-                        className="rounded-lg"
-                    >
-                        {isDarkMode ? (
-                            <Sun className="w-5 h-5" />
-                        ) : (
-                            <Moon className="w-5 h-5" />
-                        )}
-                    </Button>
-
                     {isLoggedIn && (
                         <>
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                onClick={() => onNavigate('profile')}
+                                onClick={() => onNavigate('perfil')}
                                 className="rounded-lg"
                             >
                                 <User className="w-5 h-5" />

@@ -3,8 +3,7 @@ import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Progress } from "../ui/progress";
-import { MessageSquare, Mic, Headphones, PenTool, Star, CheckCircle2, XCircle, ChevronLeft, Trophy
-} from "lucide-react";
+import { MessageSquare, Mic, Headphones, PenTool, Star, CheckCircle2, XCircle, ChevronLeft, Trophy } from "lucide-react";
 
 export default function Atividades({ onNavigate }) {
     let progressoAtual = 35;
