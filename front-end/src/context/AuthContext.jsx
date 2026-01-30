@@ -40,7 +40,11 @@ export const AuthProvider = ({ children }) => {
                 idioma_alvo_id
             });
             alert('Cadastro realizado com sucesso! Faça login.');
-            navigate('/login');
+            const loginRes = await axios.post('http://127.0.0.1:8000/auth/signin/', { email, password });
+            localStorage.setItem('accessToken', loginRes.data.access);
+            localStorage.setItem('refreshToken', loginRes.data.refresh);
+            setUser(loginRes.data.user);
+            navigate('/dashboard');
         } catch (err) {
             alert(err.response?.data?.error || 'Erro no cadastro. Tente novamente.');
         }
